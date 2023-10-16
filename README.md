@@ -1,1 +1,1 @@
-# конструктор копіювання
+# copy constructor student
