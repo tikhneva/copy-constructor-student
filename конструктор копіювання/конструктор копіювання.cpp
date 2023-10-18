@@ -111,39 +111,39 @@ class Student
 {
     string name;
     string surname;
+    string father_name;
+    string home_address;
+    string phone_number;
+    int age;
     DateTime birthday;
-    DateTime study_start; // 01.09.2022 
+    DateTime study_start; // 25.10.1998 
 
     // TO DO:  
 
     int* hometask_rates = nullptr;
     int hometask_rates_count = 0;
 
-    // TO DO: practice and exams 
+    int* practice_rates = nullptr;
+    int practice_rates_count = 0;
+
+    int* exam_rates = nullptr;
+    int exam_rates_count = 0;
 
 public:
-    Student() :Student("Minho", "lee", { 9, 10, 2000 }, { 1, 9, 2022 }) {}
+    Student() :Student("Minho", "lee", "Minsung" { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
 
-    Student(string name, string surname) :Student("Minho", "Lee", { 9, 10, 2000 }, { 1, 9, 2022 }) {}
+    Student(string name, string surname, string father_name, string address, string phone_number) :Student("Minho", "Lee", "Minsung", { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
 
-    Student(string name, string surname, DateTime birthday, DateTime study_start)
+    Student(string name, string surname, string father_name, DateTime birthday, string address, string phone_number, DateTime study_start)
     {
         SetName(name);
         SetSurname(surname);
+        SetFatherName(father_name);
         SetBirthday(birthday);
+        SetAddress(address);
+        SetPhoneNumber(phone_number);
         SetStudyStart(study_start);
     }
-    /*Student()
-    {
-        SetName("");
-        SetSurname("");
-        SetBirthday({ 9, 10, 2000 });
-        SetStudyStart({ 1, 9, 2022 });
-    }*/
-
-    // TO DO: constructors overloading !!! 
-
-    // TO DO: make copy c-tor 
 
     /// <summary> 
     ///  Defines a destructor for the class "Student." This destructor checks for allocated memory for the "hometask_rates" array and removes it if there is, preventing a memory leak
@@ -154,6 +154,16 @@ public:
         {
             delete[] hometask_rates;
             hometask_rates = nullptr;
+        }
+        if (practice_rates != nullptr)
+        {
+            delete[] practice_rates;
+            practice_rates = nullptr;
+        }
+        if (exam_rates != nullptr)
+        {
+            delete[] exam_rates;
+            exam_rates = nullptr;
         }
     }
 
@@ -226,6 +236,63 @@ public:
     }
 
     /// <summary>
+    ///  а method that allows you to change a student's father name
+    /// </summary>
+    /// <param name="father_name"></param>
+    void SetFatherName(string father_name) {
+        this->father_name = father_name;
+    }
+
+    /// <summary>
+    /// a method to get the father name
+    /// </summary>
+    /// <returns></returns>
+    string GetFatherName() const {
+        return father_name;
+    }
+
+    /// <summary>
+    /// а method that allows you to change a student's address
+    /// </summary>
+    /// <param name="home_address"></param>
+    void SetAddress(string home_address) {
+        this->home_address = home_address;
+    }
+
+    /// <summary>
+    /// a method to get the adress
+    /// </summary>
+    /// <returns></returns>
+    string GetAddress() const {
+        return home_address;
+    }
+
+    /// <summary>
+    /// а method that allows you to change a student's phone number
+    /// </summary>
+    /// <param name="phone_number"></param>
+    void SetPhoneNumber(string phone_number) {
+        this->phone_number = phone_number;
+    }
+
+    /// <summary>
+    /// a method to get the phone number
+    /// </summary>
+    /// <returns></returns>
+    string GetPhoneNumber() const {
+        return phone_number;
+    }
+
+    void SetAge(int age)
+    {
+        this->age = age;
+    }
+
+    int GetAge() const
+    {
+        return age;
+    }
+    /// <summary>
     /// This method involves adding a grade to the student's homework grade list, and the grade should be between 1 and 12 points 
     /// </summary>
     /// <param name="rate">value from 1 to 12</param>
@@ -288,20 +355,167 @@ public:
         return hometask_rates_count;
     }
 
-    // There should not be a setter for the number of grades in a class, because there is a special way to add a grade, and there is no other way to influence this process.
-
-    // TO DO: show what can happen if return pointer to array
-    /* int* GetHometaskRates() const
+    /// <summary>
+    /// This method involves adding a grade to the student's practice grade list, and the grade should be between 1 and 12 points
+    /// </summary>
+    /// <param name="rate"></param>
+    void AddPracticeRate(unsigned int rate)
     {
-        int* copy = new int[hometask_rates_count];
-        for (int i = 0; i < hometask_rates_count; i++)
+        if (rate < 1 || rate > 12)
         {
-            copy[i] = hometask_rates[i];
+            cout << "Incorrect value for parameter grade. Value must be from 1 to 12\n";
+            throw "ERROR!";
         }
-        return copy;
-    }*/
 
-    // TO DO: a lot of work here...
+        if (practice_rates_count == 0)
+        {
+            practice_rates = new int[1];
+            practice_rates[0] = rate;
+        }
+        else
+        {
+            cout << "Add yet another grade\n";
+
+            int* temp = new int[practice_rates_count + 1];
+
+            for (int i = 0; i < practice_rates_count; i++)
+            {
+                temp[i] = practice_rates[i];
+            }
+            temp[practice_rates_count] = rate;
+
+            delete[] practice_rates;
+
+            practice_rates = temp;
+        }
+
+        practice_rates_count++;
+    }
+
+    /// <summary>
+    /// shows grades for the student's practice
+    /// </summary>
+    void PrintPracticeRates() const
+    {
+        cout << "Practice rates: ";
+        for (int i = 0; i < practice_rates_count; i++)
+        {
+            cout << practice_rates[i] << ", ";
+        }
+        cout << "\n";
+    }
+
+    /// <summary>
+    /// returns the practice grade at the specified index, and at first checks that the index doesn't exeed a valid range
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    int GetPracticeRateByIndex(unsigned int index) const
+    {
+        if (index >= practice_rates_count)
+        {
+            cout << "Incorrect index when accessing the evaluation array\n";
+            throw "ERROR!";
+        }
+        return practice_rates[index];
+    }
+
+    /// <summary>
+    ///  a method to get the practice grade count
+    /// </summary>
+    /// <returns></returns>
+    int GetPracticeRatesCount() const
+    {
+        return practice_rates_count;
+    }
+
+    /// <summary>
+    /// This method involves adding a grade to the student's exam rate list, and the grade should be between 1 and 12 points
+    /// </summary>
+    /// <param name="rate"></param>
+    void AddExamRate(unsigned int rate)
+    {
+        if (rate < 1 || rate > 12)
+        {
+            cout << "Incorrect value for parameter grade. Value must be from 1 to 12\n";
+            throw "ERROR!";
+        }
+
+        if (exam_rates_count == 0)
+        {
+            exam_rates = new int[1];
+            exam_rates[0] = rate;
+        }
+        else
+        {
+            cout << "Add yet another grade\n";
+
+            int* temp = new int[exam_rates_count + 1];
+
+            for (int i = 0; i < exam_rates_count; i++)
+            {
+                temp[i] = exam_rates[i];
+            }
+            temp[exam_rates_count] = rate;
+
+            delete[] exam_rates;
+
+            exam_rates = temp;
+        }
+
+        exam_rates_count++;
+    }
+
+    /// <summary>
+    /// shows grades for the student's exams
+    /// </summary>
+    void PrintExamRates() const
+    {
+        cout << "Exam rates: ";
+        for (int i = 0; i < exam_rates_count; i++)
+        {
+            cout << exam_rates[i] << ", ";
+        }
+        cout << "\n";
+    }
+
+    /// <summary>
+    /// returns the exam grade at the specified index, and at first checks that the index doesn't exeed a valid range
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    int GetExamRateByIndex(unsigned int index) const
+    {
+        if (index >= exam_rates_count)
+        {
+            cout << "Incorrect index when accessing the evaluation array\n";
+            throw "ERROR!";
+        }
+        return exam_rates[index];
+    }
+
+    /// <summary>
+    ///  a method to get the exam grade count
+    /// </summary>
+    /// <returns></returns>
+    int GetExamRatesCount() const
+    {
+        return exam_rates_count;
+    }
+
+    /// <summary>
+    /// print's student's whole information, but without grades
+    /// </summary>
+    void ShowStudent() const {
+        cout << "Name: " << name << endl;
+        cout << "Surname: " << surname << endl;
+        cout << "Birthday: " << address << endl;
+        cout << "Father Name: " << father_name << endl;
+        cout << "Address: " << address << endl;
+        cout << "Phone Number: " << phone_number << endl;
+        cout << "Study Start: " << phone_number << endl;
+    }
+
 };
 
 int main()
@@ -309,13 +523,24 @@ int main()
     Student s;
     s.AddHometaskRate(10);
     s.AddHometaskRate(12);
-    s.AddHometaskRate(5);
-    s.AddHometaskRate(2);
-    s.PrintHometaskRates();
-    s.AddHometaskRate(7);
-    s.AddHometaskRate(7);
-    s.AddHometaskRate(8);
+    s.AddHometaskRate(9);
     s.AddHometaskRate(8);
     s.PrintHometaskRates();
-    cout << s.GetHometasksRatesCount() << "\n"; // 8
+
+    s.AddPracticeRate(7);
+    s.AddPracticeRate(10);
+    s.AddPracticeRate(9);
+    s.AddPracticeRate(11);
+    s.PrintPracticeRates();
+
+    s.AddExamRate(12);
+    s.AddExamRate(10);
+    s.AddExamRate(11);
+    s.AddExamRate(9);
+    s.PrintExamRates();
+
+    s.ShowStudent();
+    cout << s.GetHometasksRatesCount() << "\n";
+    cout << s.GetPracticeRatesCount() << "\n";
+    cout << s.GetExamRatesCount() << "\n";
 }
