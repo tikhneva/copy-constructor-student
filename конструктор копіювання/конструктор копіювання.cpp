@@ -112,7 +112,7 @@ class Student
     string name;
     string surname;
     string father_name;
-    string home_address;
+    string address;
     string phone_number;
     int age;
     DateTime birthday;
@@ -130,7 +130,7 @@ class Student
     int exam_rates_count = 0;
 
 public:
-    Student() :Student("Minho", "lee", "Minsung" { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
+    Student() :Student("Minho", "lee", "Minsung", { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
 
     Student(string name, string surname, string father_name, string address, string phone_number) :Student("Minho", "Lee", "Minsung", { 25, 10, 1998 }, "Seoul", "0325112014", { 1, 9, 2022 }) {}
 
@@ -254,9 +254,9 @@ public:
     /// <summary>
     /// а method that allows you to change a student's address
     /// </summary>
-    /// <param name="home_address"></param>
-    void SetAddress(string home_address) {
-        this->home_address = home_address;
+    /// <param name="address"></param>
+    void SetAddress(string address) {
+        this->address = address;
     }
 
     /// <summary>
@@ -264,7 +264,7 @@ public:
     /// </summary>
     /// <returns></returns>
     string GetAddress() const {
-        return home_address;
+        return address;
     }
 
     /// <summary>
@@ -410,7 +410,7 @@ public:
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    int GetPracticeRateByIndex(unsigned int index) const
+    int GetPracticeRateByIndex(unsigned int index) const //to get the grade by index, but without returning a pointer to the original data array, we need to add the "const" keyword to this method
     {
         if (index >= practice_rates_count)
         {
@@ -484,7 +484,7 @@ public:
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    int GetExamRateByIndex(unsigned int index) const
+    int GetExamRateByIndex(unsigned int index) const //to get the grade by index, but without returning a pointer to the original data array, we need to add the "const" keyword to this method
     {
         if (index >= exam_rates_count)
         {
@@ -509,11 +509,11 @@ public:
     void ShowStudent() const {
         cout << "Name: " << name << endl;
         cout << "Surname: " << surname << endl;
-        cout << "Birthday: " << address << endl;
+        cout << "Birthday: " << birthday << endl;
         cout << "Father Name: " << father_name << endl;
         cout << "Address: " << address << endl;
         cout << "Phone Number: " << phone_number << endl;
-        cout << "Study Start: " << phone_number << endl;
+        cout << "Study Start: " << study_start << endl;
     }
 
 };
